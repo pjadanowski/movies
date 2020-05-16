@@ -35,11 +35,9 @@ class MovieController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-
         if ($request->hasFile('cover')) {
             $cover = (new UploadController)->uploadImageCover($request);
         }
-
 
         $movie = Movie::create($validator->validated() + [
                 'country_id' => (Country::where('name', $request->country)->orWhere('code', $request->country)->firstOrFail())->id,
@@ -69,16 +67,21 @@ class MovieController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Movie $movie
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Movie $movie)
     {
         $validator = $this->validateRequest($request);
+
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $updated = $movie->update($validator->validated());
+        if ($request->hasFile('cover')) {
+            $cover = (new UploadController)->uploadImageCover($request);
+        }
+
+        $updated = $movie->update($validator->validated() + ['cover' => $cover ?? null]);
         return response()->json($updated);
     }
 
