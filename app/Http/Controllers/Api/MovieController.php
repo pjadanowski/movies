@@ -61,6 +61,16 @@ class MovieController extends Controller
         return new MovieResource($movie);
     }
 
+    /**
+     * Display the specified resource.
+     * @param $title
+     * @return Collection of movies
+     */
+    public function findByTitle($title)
+    {
+        return MovieResource::collection(Movie::whereTitle($title)->get());
+    }
+
 
     /**
      * Update the specified resource in storage.
