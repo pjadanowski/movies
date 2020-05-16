@@ -14,6 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::resource('movies', 'Api\\MovieController'); // ja bym osobiście tą linijke wrzucił do pliku api.php ale podane endpointy w zadaniu mają być /movies...
