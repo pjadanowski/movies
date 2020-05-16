@@ -8,8 +8,10 @@ use App\Http\Resources\Movie as MovieResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
 class MovieController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -33,8 +35,15 @@ class MovieController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
+
+        if ($request->hasFile('cover')) {
+            $cover = (new UploadController)->uploadImageCover($request);
+        }
+
+
         $movie = Movie::create($validator->validated() + [
-                'country_id' => (Country::where('name', $request->country)->orWhere('code', $request->country)->firstOrFail())->id
+                'country_id' => (Country::where('name', $request->country)->orWhere('code', $request->country)->firstOrFail())->id,
+                'cover' => $cover ?? null
             ]);
 
         if ($g = request('genres')) {
