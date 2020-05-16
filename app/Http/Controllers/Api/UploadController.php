@@ -13,7 +13,7 @@ class UploadController extends Controller
 
     public function __construct()
     {
-        $this->movie_cover_path = public_path('movie_covers');
+        $this->movie_cover_path = config('uploads.movie_cover_path');
     }
 
 
@@ -40,6 +40,6 @@ class UploadController extends Controller
             $img->save($this->movie_cover_path . '/' . $image_name_with_extension);
         }
 
-        return $this->movie_cover_path . DIRECTORY_SEPARATOR . $image_name_with_extension;
+        return $image_name_with_extension;
     }
 }

@@ -18,4 +18,12 @@ class Movie extends Model
         return $this->belongsToMany(Genre::class);
     }
 
+    public function getCover()
+    {
+        if (is_null($this->cover) or preg_match('/https?/', $this->cover)) {
+            return $this->cover;
+        }
+        return config('uploads.movie_cover_path') . DIRECTORY_SEPARATOR . $this->cover;
+    }
+
 }
