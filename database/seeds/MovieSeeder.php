@@ -1,5 +1,6 @@
 <?php
 
+use App\Country;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 
@@ -16,6 +17,7 @@ class MovieSeeder extends Seeder
 
     public function run()
     {
+        $country_count = Country::count();
 
         foreach (range(1, 20) as $i) {
             \App\Movie::create([
@@ -23,7 +25,7 @@ class MovieSeeder extends Seeder
                 'genre_id' => $this->faker->numberBetween(1, 20),
                 'cover' => 'https://via.placeholder.com/150',
                 'description' => $this->faker->text,
-                'country_id' => $this->faker->numberBetween(1, Country::count())
+                'country_id' => $this->faker->numberBetween(1, $country_count)
             ]);
         }
     }
